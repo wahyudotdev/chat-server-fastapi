@@ -1,0 +1,33 @@
+
+version: '3.1'
+
+volumes:
+  init-db:
+  data-db:
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - ./data-db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_NAME}
+    env_file:
+      - .env
+    network_mode: 'host'
+    command: mongod --port ${MONGODB_PORT}
+
+  api:
+    build: .
+    env_file:
+      - .env
+    restart: always
+    command: uvicorn app.main:app --host 0.0.0.0 --reload --log-config ./logging.yml
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - ${LISTEN_PORT}:8000

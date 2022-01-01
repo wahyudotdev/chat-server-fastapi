@@ -1,0 +1,26 @@
+fastapi==0.68.1
+httptools==0.3.0 # For routing
+pydantic==1.8.2
+starlette==0.14.2
+uvicorn==0.15.0
+motor==2.5.1
+mongomock==3.23.0
+mongomock-motor==0.0.1
+python-dotenv==0.19.1
+python-multipart==0.0.5
+python-jose==3.3.0      # "python-jose[cryptography]"
+passlib==1.7.4          # "passlib[bcrypt]"
+cryptography==35.0.0
+bcrypt==3.2.0
+pytest==6.2.5
+requests==2.26.0
+websockets==10.1
+pytest-asyncio==0.16.0
+requests==2.26.0
+aiohttp==3.8.1
+aiofiles==0.8.0
+responses==0.16.0
+pytest-responses==0.5.0
+pytest-parallel==0.1.1
+PyYAML==6.0
+email-validator==1.1.3
