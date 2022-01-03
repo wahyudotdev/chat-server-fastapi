@@ -12,7 +12,7 @@ class Chat(BaseModel):
     sender: str
     receiver: str
     media: Optional[Media] = None
-    timestamp: int = int(time() * 1000)
+    timestamp: int
 
     class Config:
         orm_mode = True

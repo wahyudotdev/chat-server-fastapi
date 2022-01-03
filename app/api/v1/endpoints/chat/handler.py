@@ -1,4 +1,4 @@
-import json
+from time import time
 from fastapi import APIRouter, Depends
 from fastapi.encoders import jsonable_encoder
 from starlette.websockets import WebSocketDisconnect
@@ -18,6 +18,7 @@ async def private_chat(instance: WsInstance = Depends(room.connect)):
             try:
                 data = await instance.websocket.receive_json()
                 data['sender'] = instance.user.username
+                data['timestamp'] = int(time() * 1000)
                 receiver = data['receiver']
                 message = Chat(**data)
                 await room.p2p(instance, receiver, jsonable_encoder(message))
@@ -27,3 +28,4 @@ async def private_chat(instance: WsInstance = Depends(room.connect)):
             except WebSocketDisconnect:
                 await room.disconnect(instance)
                 break
+            
