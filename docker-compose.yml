@@ -18,7 +18,8 @@ services:
       MONGO_INITDB_DATABASE: ${MONGODB_NAME}
     env_file:
       - .env
-    network_mode: 'host'
+    expose:
+      - ${MONGODB_PORT}
     command: mongod --port ${MONGODB_PORT}
 
   api:
