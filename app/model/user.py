@@ -12,12 +12,10 @@ class User(BaseModel):
     name: str = Field(...)
     username: str = Field(...)
     password: str = Field(...)
-    email: str = Field(...)
     customer_id: Optional[str]
     created: Optional[datetime] = datetime.now()
     updated: Optional[datetime] = datetime.now()
-    disabled: bool = False
-    photo: Optional[str] = f'{config.API_V1_STR}/user/photo/profile.jpg'
+    photo: Optional[str] = f'/user/photo/profile.jpg'
     
     class Config:
         orm_mode = True
@@ -29,6 +27,5 @@ class User(BaseModel):
                 "name": "Jane Done",
                 "username": "janedone",
                 "password": "mama",
-                "email": "janedoe@gmail.com"
             }
         }
