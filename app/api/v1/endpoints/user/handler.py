@@ -25,9 +25,10 @@ async def add_user(user_data: User = Depends(check_username_exists)):
     return ResponseUserInDB
 
 @router.get('/all', response_model=ResponseUsers)
-async def get_all_user(user: User = Depends(get_current_user)):
+async def get_all_user(current_user: User = Depends(get_current_user)):
     try:
         users = await retrieve_all_user()
+        users = [user for user in users if user.username != current_user.username]
         ResponseUsers.data = users
     except Exception as e:
         print("Error : ", e)
@@ -54,7 +55,7 @@ async def update_self_profile(data_update: UpdateUser, user=Depends(get_current_
     success, updated_user = await update_user(user.id, data_user)
     ResponseUserInDB.message = "Berhasil memperbarui profil" if success else "Pembaruan profil gagal"
     ResponseUserInDB.data = updated_user
-    ResponseUserInDB.success = success
+    ResponseUserInDB.status = success
     return ResponseUserInDB
 
 

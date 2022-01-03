@@ -1,5 +1,7 @@
+from typing import List
 from fastapi import HTTPException
 from pydantic.tools import parse_obj_as
+from app.api.v1.endpoints.user.serializers import UserData
 from app.core.db import db
 from .collection import USER_COLLECTION
 from app.model.user import User
@@ -21,7 +23,8 @@ async def retrieve_all_user():
     data_users = []
     async for users in db[USER_COLLECTION].find({}):
         data_users.append(user_helper(users))
-    return data_users
+    # return data_users
+    return parse_obj_as(List[User], data_users)
 
 async def check_username_exists(user: User):
     data = await db[USER_COLLECTION].find_one({'username': user.username})
@@ -53,7 +56,6 @@ def user_helper(user) -> dict:
     return {
         'id': str(user.get('_id')),
         'name': user.get('name'),
-        'email': user.get('email'),
         'username': user.get('username'),
         'password': user.get('password', None),
         'created': user.get('created', None),

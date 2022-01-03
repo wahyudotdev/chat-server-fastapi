@@ -7,7 +7,6 @@ class User(BaseModel):
     id: str
     name: Optional[str] = None
     username: str
-    email: str
     created: datetime
     updated: datetime
     photo: Optional[str]
