@@ -20,12 +20,18 @@ async def private_chat(instance: WsInstance = Depends(room.connect)):
         while True:
             try:
                 data = await instance.websocket.receive_json()
-                data['sender'] = instance.user.username
-                data['timestamp'] = int(time() * 1000)
-                data['name'] = instance.user.name
-                receiver = data['receiver']
-                message = Chat(**data)
-                await room.p2p(instance, receiver, jsonable_encoder(message))
+                if data['event'] == 'message':
+                    data['sender'] = instance.user.username
+                    data['timestamp'] = int(time() * 1000)
+                    data['name'] = instance.user.name
+                    receiver = data['receiver']
+                    message = Chat(**data)
+                    await room.p2p(instance, receiver, jsonable_encoder(message))
+                elif data['event'] == 'refresh':
+                    pending_chat = await get_chat(instance.user.username)
+                    for message in pending_chat:
+                        await instance.websocket.send_json(jsonable_encoder(message))
+                    await remove_chat(instance.user.username)
             except JSONDecodeError:
                 logging.error('JSONDecodeError')
                 pass
