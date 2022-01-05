@@ -6,6 +6,7 @@ from starlette.websockets import WebSocketState
 from app.core.auth import User
 from app.core.auth.utils import authenticate_with_query
 from app.core.exception import AuthFailedException
+from app.crud.chat import save_chat, get_chat, remove_chat
 
 logging = logging.getLogger(__name__)
 
@@ -74,7 +75,9 @@ class WsConnectionManager:
                     'data': data
                 }
                 await state.websocket.send_json(message)
+                await remove_chat(receiver)
                 return True
+        await save_chat(data)
         return False
 
 

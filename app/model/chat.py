@@ -1,6 +1,5 @@
-from typing import Optional
 from pydantic import BaseModel
-from time import time
+from typing import Optional
 
 class Media(BaseModel):
     type: str
