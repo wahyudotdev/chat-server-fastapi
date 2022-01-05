@@ -37,7 +37,7 @@ class WsConnectionManager:
         }
         if websocket.client_state == WebSocketState.CONNECTED:
             await websocket.send_json(message)
-        await websocket.close()
+            await websocket.close()
 
     async def connect(self, websocket:WebSocket, token: Optional[str]) -> WsInstance:
         try:
@@ -49,7 +49,7 @@ class WsConnectionManager:
             
             for state in self.connections[instance.room_id]:
                 if state.user.username == user.username:
-                    raise AuthFailedException(f'Tidak dapat membuka lebih dari {self.max_session} sesi')
+                    await self.send_disconnect_message(state.websocket, 'Duplicate connection')
 
             self.connections[instance.room_id].append(instance)
             logging.debug(f'{user.username} joined in {websocket.url.path}')
