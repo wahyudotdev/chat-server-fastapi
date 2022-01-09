@@ -5,3 +5,4 @@ __pycache__/
 data-db/
 init-db/
 compose-dev.yml
+user_files/

@@ -1,11 +1,15 @@
 from typing import Optional
 from pydantic import BaseModel
-from time import time
+
+ALLOWED_CONTENT_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/*']
 
 class Media(BaseModel):
     type: str
     url: str
-    thumbnail: str
+    size: int
+
+    class Config:
+        orm_mode = True
 
 class Chat(BaseModel):
     name: str
